@@ -31,6 +31,7 @@ class R < Formula
   option "without-test", "Skip build-time tests (not recommended)"
   option "without-tcltk", "Build without Tcl/Tk"
   option "with-librmath-only", "Only build standalone libRmath library"
+  option "with-intellibs", "Use optimized Intel libraries"
 
   deprecated_option "without-check" => "without-test"
 
@@ -107,6 +108,13 @@ class R < Formula
       args << "--with-blas=-framework Accelerate" << "--with-lapack"
       ENV.append_to_cflags "-D__ACCELERATE__" if ENV.compiler != :clang
       # Fall back to Rblas without-accelerate or -openblas
+    elsif build.with? "intellibs"
+      ENV["MKLROOT"] = "/opt/intel/mkl/lib"
+      ENV.append "MKL", "#{MKLROOT}/lib/libmkl_intel_lp64.a #{MKLROOT}/lib/libmkl_tbb_thread.a " +
+        "#{MKLROOT}/lib/libmkl_core.a -ltbb -lstdc++ -lpthread -lm -ldl"
+      args << "--with-blas=#{MKL} --with-lapack"
+      ENV.append "CPPFLAGS", "-m64 -I#{MKLROOT}/include"
+      ENV.append_to_cflags "-m64 -I#{MKLROOT}/include"
     end
 
     args << "--without-tcltk" if build.without? "tcltk"
