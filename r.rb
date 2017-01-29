@@ -110,8 +110,8 @@ class R < Formula
       # Fall back to Rblas without-accelerate or -openblas
     elsif build.with? "intellibs"
       ENV["MKLROOT"] = "/opt/intel/mkl/lib"
-      ENV.append "MKL", "#{MKLROOT}/lib/libmkl_intel_lp64.a #{MKLROOT}/lib/libmkl_tbb_thread.a " +
-        "#{MKLROOT}/lib/libmkl_core.a -ltbb -lstdc++ -lpthread -lm -ldl"
+      ENV.append  "MKL", " -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib " +
+                  " -lmkl_rt -lpthread -lm -ldl"
       args << "--with-blas=#{MKL} --with-lapack"
       ENV.append "CPPFLAGS", "-m64 -I#{MKLROOT}/include"
       ENV.append_to_cflags "-m64 -I#{MKLROOT}/include"
