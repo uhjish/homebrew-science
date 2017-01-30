@@ -110,10 +110,10 @@ class R < Formula
       system "/opt/intel/mkl/bin/mklvars.sh intel64"
       ENV.append "CPPFLAGS", "-m64 -I${MKLROOT}/include"
       ENV.append_to_cflags "-m64 -I${MKLROOT}/include"
-      ENV.append  "MKL", " -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib " +
-                  " -lmkl_rt -lpthread -lm -ldl"
-      pp ENV
-      args << "--with-blas= -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib -lmkl_rt -lpthread -lm -ldl" 
+      ENV.append "MKL", "-L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib -lmkl_rt -lpthread -lm -ldl"
+      ENV.append "LDFLAGS", "-L${MKLROOT}/lib/intel64"
+      ENV.append "LD_LIBRARY_PATH", "${MKLROOT}/lib/intel64"
+      args << "--with-blas=${MKL} --with-lapack=${MKL}"
     elsif build.with? "accelerate"
       args << "--with-blas=-framework Accelerate" << "--with-lapack"
       ENV.append_to_cflags "-D__ACCELERATE__" if ENV.compiler != :clang
