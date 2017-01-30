@@ -104,17 +104,17 @@ class R < Formula
     if build.with? "openblas"
       args << "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas" << "--with-lapack"
       ENV.append "LDFLAGS", "-L#{Formula["openblas"].opt_lib}"
-    elsif build.with? "accelerate"
-      args << "--with-blas=-framework Accelerate" << "--with-lapack"
-      ENV.append_to_cflags "-D__ACCELERATE__" if ENV.compiler != :clang
-      # Fall back to Rblas without-accelerate or -openblas
     elsif build.with? "intellibs"
-      ENV["MKLROOT"] = "/opt/intel/mkl/lib"
-      ENV.append  "MKL", " -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib " +
+      system "/opt/intel/mkl/bin/mklvars.sh intel64"
+      ENV.append  "MKL", " -L#{MKLROOT}/lib -Wl,-rpath,#{MKLROOT}/lib " +
                   " -lmkl_rt -lpthread -lm -ldl"
       args << "--with-blas=#{MKL} --with-lapack"
       ENV.append "CPPFLAGS", "-m64 -I#{MKLROOT}/include"
       ENV.append_to_cflags "-m64 -I#{MKLROOT}/include"
+    elsif build.with? "accelerate"
+      args << "--with-blas=-framework Accelerate" << "--with-lapack"
+      ENV.append_to_cflags "-D__ACCELERATE__" if ENV.compiler != :clang
+      # Fall back to Rblas without-accelerate or -openblas
     end
 
     args << "--without-tcltk" if build.without? "tcltk"
