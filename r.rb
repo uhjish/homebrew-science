@@ -116,6 +116,7 @@ class R < Formula
       ENV["CXX"] = "g++-6"
       ENV["HOMEBREW_CC"] = "gcc-6"
       ENV["HOMEBREW_CXX"] = "g++-6"
+      ENV["OBJC"] = "gcc-6"
       ENV["OBJCC"] = "gcc-6"
       ENV["OBJCXX"] = "g++-6"
       pp ENV
