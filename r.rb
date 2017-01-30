@@ -106,11 +106,12 @@ class R < Formula
       ENV.append "LDFLAGS", "-L#{Formula["openblas"].opt_lib}"
     elsif build.with? "intellibs"
       system "/opt/intel/mkl/bin/mklvars.sh intel64"
-      ENV.append  "MKL", " -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib " +
-                  " -lmkl_rt -lpthread -lm -ldl"
-      args << "--with-blas=${MKL} --with-lapack"
       ENV.append "CPPFLAGS", "-m64 -I${MKLROOT}/include"
       ENV.append_to_cflags "-m64 -I${MKLROOT}/include"
+      ENV.append  "MKL", " -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib " +
+                  " -lmkl_rt -lpthread -lm -ldl"
+      system "echo $CC $CXX $FC $F77 $FPICFLAGS $LD $LD_LIBRARY_PATH $CPP_FLAGS $CFLAGS"
+      args << "--with-blas= -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib -lmkl_rt -lpthread -lm -ldl" 
     elsif build.with? "accelerate"
       args << "--with-blas=-framework Accelerate" << "--with-lapack"
       ENV.append_to_cflags "-D__ACCELERATE__" if ENV.compiler != :clang
