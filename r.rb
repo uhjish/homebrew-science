@@ -110,7 +110,7 @@ class R < Formula
       ENV.append_to_cflags "-m64 -I${MKLROOT}/include"
       ENV.append  "MKL", " -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib " +
                   " -lmkl_rt -lpthread -lm -ldl"
-      system "echo #{ENV}"
+      puts ENV
       args << "--with-blas= -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib -lmkl_rt -lpthread -lm -ldl" 
     elsif build.with? "accelerate"
       args << "--with-blas=-framework Accelerate" << "--with-lapack"
