@@ -107,7 +107,7 @@ class R < Formula
       args << "--with-blas=-L#{Formula["openblas"].opt_lib} -lopenblas" << "--with-lapack"
       ENV.append "LDFLAGS", "-L#{Formula["openblas"].opt_lib}"
     elsif build.with? "intellibs"
-      system "source /opt/intel/mkl/bin/mklvars.sh intel64"
+      system "/opt/intel/mkl/bin/mklvars.sh intel64"
       ENV.append "CPPFLAGS", "-m64 -I${MKLROOT}/include"
       ENV.append_to_cflags "-m64 -I${MKLROOT}/include"
       ENV.append  "MKL", " -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib " +
