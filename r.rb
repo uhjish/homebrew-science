@@ -112,13 +112,6 @@ class R < Formula
       ENV.append_to_cflags "-m64 -I${MKLROOT}/include"
       ENV.append  "MKL", " -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib " +
                   " -lmkl_rt -lpthread -lm -ldl"
-      ENV["CC"] = "gcc-6"
-      ENV["CXX"] = "g++-6"
-      ENV["HOMEBREW_CC"] = "gcc-6"
-      ENV["HOMEBREW_CXX"] = "g++-6"
-      ENV["OBJC"] = "gcc-6"
-      ENV["OBJCC"] = "gcc-6"
-      ENV["OBJCXX"] = "g++-6"
       pp ENV
       args << "--with-blas= -L${MKLROOT}/lib -Wl,-rpath,${MKLROOT}/lib -lmkl_rt -lpthread -lm -ldl" 
     elsif build.with? "accelerate"
